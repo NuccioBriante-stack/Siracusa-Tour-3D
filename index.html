@@ -1,41 +1,45 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="it">
 <head>
     <meta charset="utf-8">
     <title>Siracusa 3D VR - Tour Virtuale</title>
+    
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    
     <script src="https://unpkg.com/aframe-depth-mesh-component/dist/aframe-depth-mesh-component.min.js"></script>
-    <script src="main.js"></script> 
+
+    <script src="main.js"></script>
 </head>
+<body>
+    <a-scene renderer="antialias: true; colorManagement: true;">
+        
+        <a-assets timeout="10000">
+            <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
+            <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
+            <img id="scena3" src="scena3_3D.jpg" crossorigin="anonymous">
+            <img id="scena4" src="scena4_3D.jpg" crossorigin="anonymous">
+            <img id="scena5" src="scena5_3D.jpg" crossorigin="anonymous">
+            <img id="scena6" src="scena6_3D.jpg" crossorigin="anonymous">
+            <img id="scena7" src="scena7_3D.jpg" crossorigin="anonymous">
+            <img id="scena8" src="scena8_3D.jpg" crossorigin="anonymous">
+        </a-assets>
 
-  <body>
-    <a-scene>
-<a-assets>
-  <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
-  <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
-  <img id="scena3" src="scena3_3D.jpg" crossorigin="anonymous">
-  <img id="scena4" src="scena4_3D.jpg" crossorigin="anonymous">
-  <img id="scena5" src="scena5_3D.jpg" crossorigin="anonymous">
-  <img id="scena6" src="scena6_3D.jpg" crossorigin="anonymous">
-  <img id="scena7" src="scena7_3D.jpg" crossorigin="anonymous">
-  <img id="scena8" src="scena8_3D.jpg" crossorigin="anonymous">
-</a-assets>
+        <a-entity id="main-sky"
+                  depth-mesh="src: #scena1; type: top-bottom; displacement: 0.5"
+                  rotation="0 -90 0">
+        </a-entity>
 
-      <a-entity id="main-sky"
-        depth-mesh="src: #scena1; type: top-bottom; displacement: 0.5"
-        rotation="0 -90 0">
-      </a-entity>
+        <a-camera position="0 0 0" look-controls>
+            <a-cursor color="yellow" fuse="true" fuse-timeout="1500"></a-cursor>
+        </a-camera>
 
-      <a-camera position="0 0 0">
-        <a-cursor color="yellow"></a-cursor>
-      </a-camera>
-
-      <a-sphere position="2 1.2 -3" radius="0.15" color="cyan" 
-                onclick="cambiaScena('#scena2')">
-      </a-sphere>
+        <a-sphere position="2 1.2 -3" 
+                  radius="0.15" 
+                  color="cyan"
+                  class="clickable"
+                  onclick="cambiaScena('#scena2')">
+        </a-sphere>
 
     </a-scene>
-
-  </body>
+</body>
 </html>
