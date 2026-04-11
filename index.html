@@ -8,7 +8,6 @@
     
     <script src="https://unpkg.com/aframe-depth-mesh-component/dist/aframe-depth-mesh-component.min.js"></script>
 
-    <script src="main.js"></script>
 </head>
 <body>
     <a-scene renderer="antialias: true; colorManagement: true;">
@@ -24,10 +23,7 @@
             <img id="scena8" src="scena8_3D.jpg" crossorigin="anonymous">
         </a-assets>
 
-        <a-entity id="main-sky"
-                  depth-mesh="src: #scena1; type: top-bottom; displacement: 0.5"
-                  rotation="0 -90 0">
-        </a-entity>
+        <a-sky src="#scena1" rotation="0 -90 0"></a-sky>
 
         <a-camera position="0 0 0" look-controls>
             <a-cursor color="yellow" fuse="true" fuse-timeout="1500"></a-cursor>
@@ -41,5 +37,6 @@
         </a-sphere>
 
     </a-scene>
+	<script src="main.js"></script>
 </body>
 </html>
