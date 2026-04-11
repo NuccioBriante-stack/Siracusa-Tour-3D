@@ -1,18 +1,17 @@
-// Definizione della funzione globale per il cambio scena
-window.cambiaScena = function(nuovaImmagineId) {
-    console.log("Scena cambiata a: " + nuovaImmagineId);
+// Funzione globale per il cambio scena
+window.cambiaScena = function(idNuovaFoto) {
+    console.log("Cambio scena verso: " + idNuovaFoto);
     
-    const sky = document.querySelector('#main-sky');
+    var sky = document.querySelector('#main-sky');
     
     if (sky) {
-        // Aggiorna il componente depth-mesh
+        // Aggiorna il componente depth-mesh con i parametri necessari
         sky.setAttribute('depth-mesh', {
-            src: nuovaImmagineId,
+            src: idNuovaFoto,
             type: 'top-bottom',
             displacement: 0.5
         });
     } else {
-        console.error("Errore: Elemento #main-sky non trovato!");
+        console.error("Elemento #main-sky non trovato!");
     }
 };
-
