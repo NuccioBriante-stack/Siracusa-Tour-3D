@@ -4,26 +4,24 @@
     <meta charset="utf-8">
     <title>Siracusa 3D VR</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-depth-mesh-component@1.0.0/dist/aframe-depth-mesh-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-depth-mesh-component/dist/aframe-depth-mesh-component.min.js"></script>
     <script src="main.js"></script>
   </head>
   <body>
-    <a-scene renderer="colorManagement: true;">
+    <a-scene>
       
-      <a-assets timeout="10000">
-        <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
-        <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
+      <a-assets>
+        <img id="scena1" src="scena1_3D.jpg?v=1" crossorigin="anonymous">
+        <img id="scena2" src="scena2_3D.jpg?v=1" crossorigin="anonymous">
       </a-assets>
 
-      <a-entity id="main-sky" 
-                geometry="primitive: sphere; radius: 50; segmentsWidth: 64; segmentsHeight: 64"
+      <a-entity id="main-sky"
                 depth-mesh="src: #scena1; type: top-bottom; displacement: 0.5"
-                scale="-1 1 1"
                 rotation="0 -90 0">
       </a-entity>
 
       <a-camera position="0 0 0">
-        <a-cursor color="yellow" fuse="true" fuse-timeout="1500"></a-cursor>
+        <a-cursor color="yellow"></a-cursor>
       </a-camera>
 
       <a-sphere position="2 1.2 -3" radius="0.15" color="cyan" 
@@ -33,4 +31,3 @@
     </a-scene>
   </body>
 </html>
-
