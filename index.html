@@ -2,26 +2,48 @@
 <html lang="it">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siracusa Tour 3D - Prova Immersiva</title>
-    
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script>
+      // Componente per cambiare scena
+      AFRAME.registerComponent('cambia-scena', {
+        schema: { prossima: {type: 'string'} },
+        init: function () {
+          var el = this.el;
+          var sky = document.querySelector('#sky-display');
+          el.addEventListener('click', function () {
+            sky.setAttribute('src', data.prossima);
+          });
+        }
+      });
+    </script>
   </head>
   <body>
 
     <a-scene>
-      
       <a-assets>
-        <img id="scena1" src="scena1_3D.jpg">
+        <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
+        <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
       </a-assets>
 
-      <a-sky color="#ECECEC"></a-sky>
+      <a-sky 
+        id="sky-display" 
+        src="#scena1" 
+        material="repeat: 1 0.5; offset: 0 0.5;" 
+        phi-length="360"
+        rotation="0 -90 0">
+      </a-sky>
+
+      <a-sphere 
+        position="2 1.6 -4" 
+        radius="0.2" 
+        color="yellow" 
+        cambia-scena="prossima: #scena2">
+      </a-sphere>
 
       <a-entity camera look-controls position="0 1.6 0">
-        <a-cursor fuse="false" color="#4CC3D9"></a-cursor>
+        <a-cursor fuse="true" fuse-timeout="1500" color="#4CC3D9"></a-cursor>
       </a-entity>
 
     </a-scene>
-
   </body>
 </html>
