@@ -2,26 +2,20 @@
 <html lang="it">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Siracusa Tour 3D - 8 Scene</title>
-    
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
     <script>
-      // Componente personalizzato per cambiare l'immagine del cielo
+      // COMPONENTE CORRETTO
       AFRAME.registerComponent('cambia-scena', {
-        schema: {
-          prossima: { type: 'string' }
-        },
+        schema: { prossima: { type: 'string' } },
         init: function () {
           var el = this.el;
-          var data = this.data;
+          var prossimaScena = this.data.prossima; // Recupero corretto dell'ID
           var sky = document.querySelector('#sky-display');
 
           el.addEventListener('click', function () {
-            // Cambia la sorgente dell'immagine del cielo
-            sky.setAttribute('src', data.prossima);
-            console.log("Passaggio a: " + data.prossima);
+            console.log("Cambio scena verso: " + prossimaScena);
+            sky.setAttribute('src', prossimaScena);
           });
         }
       });
@@ -30,7 +24,6 @@
   <body>
 
     <a-scene>
-      
       <a-assets>
         <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
         <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
@@ -46,12 +39,11 @@
         id="sky-display" 
         src="#scena1" 
         material="repeat: 1 0.5; offset: 0 0.5;" 
-        phi-length="360"
         rotation="0 -90 0">
       </a-sky>
 
       <a-sphere 
-        position="3 1.6 -5" 
+        position="2 1.6 -4" 
         radius="0.2" 
         color="yellow" 
         cambia-scena="prossima: #scena2"
@@ -59,9 +51,9 @@
       </a-sphere>
 
       <a-sphere 
-        position="-4 1.6 -3" 
+        position="-2 1.6 -4" 
         radius="0.2" 
-        color="cyan" 
+        color="green" 
         cambia-scena="prossima: #scena3">
       </a-sphere>
 
@@ -69,13 +61,13 @@
         <a-cursor 
           fuse="true" 
           fuse-timeout="1500" 
-          color="#4CC3D9"
+          color="white"
           geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03">
+          <a-animation begin="fusing" easing="ease-in" attribute="scale" fill="forwards" from="1 1 1" to="0.1 0.1 0.1" dur="1500"></a-animation>
         </a-cursor>
       </a-entity>
 
     </a-scene>
-
   </body>
 </html>
 
