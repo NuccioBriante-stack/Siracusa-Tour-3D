@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
   <head>
     <meta charset="utf-8">
-    <title>Siracusa 3D VR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siracusa Tour 3D - Prova Immersiva</title>
+    
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://unpkg.com/aframe-depth-mesh-component/dist/aframe-depth-mesh-component.min.js"></script>
-    <script src="main.js"></script>
   </head>
   <body>
+
     <a-scene>
       
       <a-assets>
-        <img id="scena1" src="scena1_3D.jpg?v=1" crossorigin="anonymous">
-        <img id="scena2" src="scena2_3D.jpg?v=1" crossorigin="anonymous">
+        <img id="scena1" src="scena1_3D.jpg">
       </a-assets>
 
-      <a-entity id="main-sky"
-                depth-mesh="src: #scena1; type: top-bottom; displacement: 0.5"
-                rotation="0 -90 0">
+      <a-sky 
+        id="sky-display" 
+        src="#scena1" 
+        repeat="1 0.5" 
+        phi-length="360"
+        rotation="0 -90 0">
+      </a-sky>
+
+      <a-entity camera look-controls position="0 1.6 0">
+        <a-cursor fuse="false" color="#4CC3D9"></a-cursor>
       </a-entity>
 
-      <a-camera position="0 0 0">
-        <a-cursor color="yellow"></a-cursor>
-      </a-camera>
-
-      <a-sphere position="2 1.2 -3" radius="0.15" color="cyan" 
-                onclick="cambiaScena('#scena2')">
-      </a-sphere>
-
     </a-scene>
+
   </body>
 </html>
