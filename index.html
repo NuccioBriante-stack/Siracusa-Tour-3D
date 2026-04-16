@@ -1,82 +1,136 @@
 <!DOCTYPE html>
 <html lang="it">
-  <head>
-    <meta charset="utf-8">
-    <title>Siracusa Tour 3D - 8 Scene Complete</title>
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+<head>
+  <meta charset="utf-8">
+  <title>Siracusa Tour 3D - Tour Completo</title>
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
-    <script>
-      // Componente per il cambio scena
-      AFRAME.registerComponent('cambia-scena', {
-        schema: { prossima: { type: 'string' } },
-        init: function () {
-          var el = this.el;
-          var prossimaScena = this.data.prossima;
-          var sky = document.querySelector('#sky-display');
+  <script>
+    // Componente centrale per la gestione della logica del tour
+    AFRAME.registerComponent('gestore-tour', {
+      init: function () {
+        this.sky = document.querySelector('#sky-display');
+        this.gruppi = document.querySelectorAll('.gruppo-hotspot');
+      },
 
-          el.addEventListener('click', function () {
-            sky.setAttribute('src', prossimaScena);
-            // Opzionale: qui si potrebbe aggiungere logica per nascondere/mostrare gruppi di icone
-          });
+      cambiaScena: function (idScena, idGruppo) {
+        // 1. Cambia l'immagine di sfondo (a-sky)
+        this.sky.setAttribute('src', idScena);
+
+        // 2. Nasconde tutti i gruppi di hotspot
+        this.gruppi.forEach(g => g.setAttribute('visible', 'false'));
+
+        // 3. Mostra solo il gruppo di hotspot della nuova scena
+        const nuovoGruppo = document.querySelector('#hotspots-' + idGruppo);
+        if (nuovoGruppo) {
+          nuovoGruppo.setAttribute('visible', 'true');
         }
-      });
-    </script>
-  </head>
-  <body>
+      }
+    });
 
-    <a-scene>
-      <a-assets>
-        <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
-        <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
-        <img id="scena3" src="scena3_3D.jpg" crossorigin="anonymous">
-        <img id="scena4" src="scena4_3D.jpg" crossorigin="anonymous">
-        <img id="scena5" src="scena5_3D.jpg" crossorigin="anonymous">
-        <img id="scena6" src="scena6_3D.jpg" crossorigin="anonymous">
-        <img id="scena7" src="scena7_3D.jpg" crossorigin="anonymous">
-        <img id="scena8" src="scena8_3D.jpg" crossorigin="anonymous">
-      </a-assets>
+    // Componente per le sfere di interazione
+    AFRAME.registerComponent('punto-passaggio', {
+      schema: {
+        destinazione: { type: 'string' }, // ID dell'immagine (es: #scena2)
+        gruppoTarget: { type: 'string' }  // ID del contenitore (es: scena2)
+      },
+      init: function () {
+        var el = this.el;
+        var data = this.data;
+        var sceneEl = document.querySelector('a-scene');
 
-      <a-sky 
-        id="sky-display" 
-        src="#scena1" 
-        material="repeat: 1 0.5; offset: 0 0.5;" 
-        rotation="0 -90 0">
-      </a-sky>
+        el.addEventListener('click', function () {
+          // Chiama la funzione del gestore tour
+          sceneEl.components['gestore-tour'].cambiaScena(data.destinazione, data.gruppoTarget);
+        });
+      }
+    });
+  </script>
+</head>
+<body>
 
-      <a-sphere position="2 1.6 -4" radius="0.15" color="yellow" cambia-scena="prossima: #scena2" 
-                animation="property: scale; to: 1.2 1.2 1.2; dir: alternate; dur: 1000; loop: true"></a-sphere>
+  <a-scene gestore-tour>
+    <a-assets>
+      <img id="scena1" src="scena1_3D.jpg" crossorigin="anonymous">
+      <img id="scena2" src="scena2_3D.jpg" crossorigin="anonymous">
+      <img id="scena3" src="scena3_3D.jpg" crossorigin="anonymous">
+      <img id="scena4" src="scena4_3D.jpg" crossorigin="anonymous">
+      <img id="scena5" src="scena5_3D.jpg" crossorigin="anonymous">
+      <img id="scena6" src="scena6_3D.jpg" crossorigin="anonymous">
+      <img id="scena7" src="scena7_3D.jpg" crossorigin="anonymous">
+      <img id="scena8" src="scena8_3D.jpg" crossorigin="anonymous">
+    </a-assets>
 
-      <a-sphere position="10 1.6 0" radius="0.15" color="red" cambia-scena="prossima: #scena1"></a-sphere>
-      <a-sphere position="0 1.6 -10" radius="0.15" color="yellow" cambia-scena="prossima: #scena3"></a-sphere>
+    <a-sky 
+      id="sky-display" 
+      src="#scena1" 
+      material="repeat: 1 0.5; offset: 0 0.5;" 
+      rotation="0 -90 0">
+    </a-sky>
 
-      <a-sphere position="5 1.6 5" radius="0.15" color="red" cambia-scena="prossima: #scena2"></a-sphere>
-      <a-sphere position="-5 1.6 -5" radius="0.15" color="yellow" cambia-scena="prossima: #scena4"></a-sphere>
+    <a-entity id="hotspots-scena1" class="gruppo-hotspot" visible="true">
+      <a-sphere position="2 1.6 -4" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena2; gruppoTarget: scena2"
+                animation="property: scale; to: 1.2 1.2 1.2; dir: alternate; dur: 1000; loop: true">
+      </a-sphere>
+    </a-entity>
 
-      <a-sphere position="0 1.6 8" radius="0.15" color="red" cambia-scena="prossima: #scena3"></a-sphere>
-      <a-sphere position="8 1.6 0" radius="0.15" color="yellow" cambia-scena="prossima: #scena5"></a-sphere>
+    <a-entity id="hotspots-scena2" class="gruppo-hotspot" visible="false">
+      <a-sphere position="10 1.6 0" radius="0.15" color="red" 
+                punto-passaggio="destinazione: #scena1; gruppoTarget: scena1"></a-sphere>
+      <a-sphere position="0 1.6 -10" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena3; gruppoTarget: scena3"></a-sphere>
+    </a-entity>
 
-      <a-sphere position="-8 1.6 0" radius="0.15" color="red" cambia-scena="prossima: #scena4"></a-sphere>
-      <a-sphere position="0 1.6 -8" radius="0.15" color="yellow" cambia-scena="prossima: #scena6"></a-sphere>
+    <a-entity id="hotspots-scena3" class="gruppo-hotspot" visible="false">
+      <a-sphere position="5 1.6 5" radius="0.15" color="red" 
+                punto-passaggio="destinazione: #scena2; gruppoTarget: scena2"></a-sphere>
+      <a-sphere position="-5 1.6 -5" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena4; gruppoTarget: scena4"></a-sphere>
+    </a-entity>
 
-      <a-sphere position="0 1.6 8" radius="0.15" color="red" cambia-scena="prossima: #scena5"></a-sphere>
-      <a-sphere position="-6 1.6 -2" radius="0.15" color="yellow" cambia-scena="prossima: #scena7"></a-sphere>
+    <a-entity id="hotspots-scena4" class="gruppo-hotspot" visible="false">
+      <a-sphere position="0 1.6 8" radius="0.15" color="red" 
+                punto-passaggio="destinazione: #scena3; gruppoTarget: scena3"></a-sphere>
+      <a-sphere position="8 1.6 0" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena5; gruppoTarget: scena5"></a-sphere>
+    </a-entity>
 
-      <a-sphere position="6 1.6 2" radius="0.15" color="red" cambia-scena="prossima: #scena6"></a-sphere>
-      <a-sphere position="2 1.6 -6" radius="0.15" color="yellow" cambia-scena="prossima: #scena8"></a-sphere>
+    <a-entity id="hotspots-scena5" class="gruppo-hotspot" visible="false">
+      <a-sphere position="-8 1.6 0" radius="0.15" color="red" 
+                punto-passaggio="destinazione: #scena4; gruppoTarget: scena4"></a-sphere>
+      <a-sphere position="0 1.6 -8" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena6; gruppoTarget: scena6"></a-sphere>
+    </a-entity>
 
-      <a-sphere position="0 1.6 5" radius="0.15" color="green" cambia-scena="prossima: #scena1"></a-sphere>
+    <a-entity id="hotspots-scena6" class="gruppo-hotspot" visible="false">
+      <a-sphere position="0 1.6 8" radius="0.15" color="red" 
+                punto-passaggio="destinazione: #scena5; gruppoTarget: scena5"></a-sphere>
+      <a-sphere position="-6 1.6 -2" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena7; gruppoTarget: scena7"></a-sphere>
+    </a-entity>
 
-      <a-entity camera look-controls position="0 1.6 0">
-        <a-cursor 
-          fuse="true" 
-          fuse-timeout="1500" 
-          color="white"
-          geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03">
-        </a-cursor>
-      </a-entity>
+    <a-entity id="hotspots-scena7" class="gruppo-hotspot" visible="false">
+      <a-sphere position="6 1.6 2" radius="0.15" color="red" 
+                punto-passaggio="destinazione: #scena6; gruppoTarget: scena6"></a-sphere>
+      <a-sphere position="2 1.6 -6" radius="0.15" color="yellow" 
+                punto-passaggio="destinazione: #scena8; gruppoTarget: scena8"></a-sphere>
+    </a-entity>
 
-    </a-scene>
-  </body>
+    <a-entity id="hotspots-scena8" class="gruppo-hotspot" visible="false">
+      <a-sphere position="0 1.6 5" radius="0.15" color="green" 
+                punto-passaggio="destinazione: #scena1; gruppoTarget: scena1"></a-sphere>
+    </a-entity>
+
+    <a-entity camera look-controls position="0 1.6 0">
+      <a-cursor 
+        fuse="true" 
+        fuse-timeout="1500" 
+        color="white"
+        geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03">
+      </a-cursor>
+    </a-entity>
+
+  </a-scene>
+</body>
 </html>
-
-
